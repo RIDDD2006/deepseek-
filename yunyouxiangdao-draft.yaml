@@ -1,0 +1,1060 @@
+schema_version: 1.0.0
+name: yunyouxiangdao
+id: 7636432651142119434
+description: "当用户告诉你想到哪玩和游记文风时，就调用此工作流，它会结合实时天气、热点新闻与百科知识，为用户生成充满趣味与实用信息的虚拟游记，沉浸式体验各地的人文与自然魅力。
+icon: plugin_icon/workflow.png
+nodes:
+    - id: "100001"
+      type: start
+      title: 开始
+      icon: https://lf3-static.bytednsdoc.com/obj/eden-cn/dvsmryvd_avi_dvsm/ljhwZthlaukjlkulzlp/icon/icon-Start-v2.jpg
+      description: "工作流的起始节点，用于设定启动工作流需要的信息"
+      position:
+        x: -945.4411802009445
+        y: 54.84378985322836
+      parameters:
+        node_outputs:
+            city:
+                type: string
+                value: null
+            writing_style:
+                type: string
+                required: true
+                value: null
+    - id: "900001"
+      type: end
+      title: 结束
+      icon: https://lf3-static.bytednsdoc.com/obj/eden-cn/dvsmryvd_avi_dvsm/ljhwZthlaukjlkulzlp/icon/icon-End-v2.jpg
+      description: "工作流的最终节点，用于返回工作流运行后的结果信息"
+      position:
+        x: 2395.9497058545994
+        y: 214.7242964521463
+      parameters:
+        node_inputs:
+            - name: markdown_output
+              input:
+                type: string
+                value:
+                    path: markdown_output
+                    ref_node: "198293"
+        terminatePlan: returnVariables
+    - id: "147393"
+      type: llm
+      title: 天气新闻获取
+      icon: https://lf3-static.bytednsdoc.com/obj/eden-cn/dvsmryvd_avi_dvsm/ljhwZthlaukjlkulzlp/icon/icon-LLM-v2.jpg
+      description: "调用大语言模型,使用变量和提示词生成回复"
+      version: "3"
+      position:
+        x: 271.89004610768643
+        y: 15.843789853228344
+      parameters:
+        fcParam:
+            pluginFCParam:
+                pluginList:
+                    - api_id: "7362852017859035163"
+                      api_name: DayWeather
+                      fc_setting:
+                        api_id: "7362852017859035163"
+                        api_name: DayWeather
+                        is_draft: false
+                        plugin_id: "7362852017859018779"
+                        plugin_version: ""
+                        request_params:
+                            - desc: 市名，包括直辖市，比如：北京市、天津市、上海市、重庆市
+                              enum_list: []
+                              enum_var_names: []
+                              global_disable: false
+                              id: ""
+                              is_required: false
+                              local_disable: false
+                              location: 3
+                              name: city
+                              sub_parameters: []
+                              type: 1
+                            - desc: 待查询结束日期
+                              enum_list: []
+                              enum_var_names: []
+                              global_disable: false
+                              id: ""
+                              is_required: false
+                              local_disable: false
+                              location: 3
+                              name: end_time
+                              sub_parameters: []
+                              type: 1
+                            - desc: 省份名，不要包括直辖市(比如：北京、北京市、北京省、天津市、上海市、重庆市)
+                              enum_list: []
+                              enum_var_names: []
+                              global_disable: false
+                              id: ""
+                              is_required: false
+                              local_disable: true
+                              location: 3
+                              name: province
+                              sub_parameters: []
+                              type: 1
+                            - desc: 待查询开始日期
+                              enum_list: []
+                              enum_var_names: []
+                              global_disable: false
+                              id: ""
+                              is_required: false
+                              local_disable: false
+                              location: 3
+                              name: start_time
+                              sub_parameters: []
+                              type: 1
+                            - desc: 区/县/镇
+                              enum_list: []
+                              enum_var_names: []
+                              global_disable: false
+                              id: ""
+                              is_required: false
+                              local_disable: true
+                              location: 3
+                              name: towns
+                              sub_parameters: []
+                              type: 1
+                            - desc: 乡/村
+                              enum_list: []
+                              enum_var_names: []
+                              global_disable: false
+                              id: ""
+                              is_required: false
+                              local_disable: true
+                              location: 3
+                              name: villages
+                              sub_parameters: []
+                              type: 1
+                        response_params:
+                            - desc: 根数据
+                              enum_list: []
+                              enum_var_names: []
+                              global_disable: false
+                              id: ""
+                              is_required: false
+                              local_disable: false
+                              location: 3
+                              name: data
+                              sub_parameters:
+                                - desc: ""
+                                  enum_list: []
+                                  enum_var_names: []
+                                  global_disable: false
+                                  id: ""
+                                  is_required: false
+                                  local_disable: false
+                                  location: 3
+                                  name: '[Array Item]'
+                                  sub_parameters:
+                                    - desc: 白天风力
+                                      enum_list: []
+                                      enum_var_names: []
+                                      global_disable: false
+                                      id: ""
+                                      is_required: false
+                                      local_disable: false
+                                      location: 3
+                                      name: wind_level_day
+                                      sub_parameters: []
+                                      type: 1
+                                    - desc: 夜晚风力
+                                      enum_list: []
+                                      enum_var_names: []
+                                      global_disable: false
+                                      id: ""
+                                      is_required: false
+                                      local_disable: false
+                                      location: 3
+                                      name: wind_level_night
+                                      sub_parameters: []
+                                      type: 1
+                                    - desc: 天气
+                                      enum_list: []
+                                      enum_var_names: []
+                                      global_disable: false
+                                      id: ""
+                                      is_required: false
+                                      local_disable: false
+                                      location: 3
+                                      name: condition
+                                      sub_parameters: []
+                                      type: 1
+                                    - desc: 湿度
+                                      enum_list: []
+                                      enum_var_names: []
+                                      global_disable: false
+                                      id: ""
+                                      is_required: false
+                                      local_disable: false
+                                      location: 3
+                                      name: humidity
+                                      sub_parameters: []
+                                      type: 3
+                                    - desc: ""
+                                      enum_list: []
+                                      enum_var_names: []
+                                      global_disable: false
+                                      id: ""
+                                      is_required: false
+                                      local_disable: true
+                                      location: 3
+                                      name: predictDate
+                                      sub_parameters: []
+                                      type: 1
+                                    - desc: 预测日期
+                                      enum_list: []
+                                      enum_var_names: []
+                                      global_disable: false
+                                      id: ""
+                                      is_required: false
+                                      local_disable: true
+                                      location: 3
+                                      name: predict_date
+                                      sub_parameters: []
+                                      type: 1
+                                    - desc: ""
+                                      enum_list: []
+                                      enum_var_names: []
+                                      global_disable: false
+                                      id: ""
+                                      is_required: false
+                                      local_disable: false
+                                      location: 3
+                                      name: weather_day
+                                      sub_parameters: []
+                                      type: 1
+                                    - desc: 夜晚风向
+                                      enum_list: []
+                                      enum_var_names: []
+                                      global_disable: false
+                                      id: ""
+                                      is_required: false
+                                      local_disable: false
+                                      location: 3
+                                      name: wind_dir_night
+                                      sub_parameters: []
+                                      type: 1
+                                    - desc: 最高温度
+                                      enum_list: []
+                                      enum_var_names: []
+                                      global_disable: false
+                                      id: ""
+                                      is_required: false
+                                      local_disable: false
+                                      location: 3
+                                      name: temp_high
+                                      sub_parameters: []
+                                      type: 3
+                                    - desc: 最低温度
+                                      enum_list: []
+                                      enum_var_names: []
+                                      global_disable: false
+                                      id: ""
+                                      is_required: false
+                                      local_disable: false
+                                      location: 3
+                                      name: temp_low
+                                      sub_parameters: []
+                                      type: 3
+                                    - desc: 白天风向
+                                      enum_list: []
+                                      enum_var_names: []
+                                      global_disable: false
+                                      id: ""
+                                      is_required: false
+                                      local_disable: false
+                                      location: 3
+                                      name: wind_dir_day
+                                      sub_parameters: []
+                                      type: 1
+                                  type: 4
+                              type: 5
+                            - desc: ""
+                              enum_list: []
+                              enum_var_names: []
+                              global_disable: false
+                              id: ""
+                              is_required: false
+                              local_disable: true
+                              location: 3
+                              name: message
+                              sub_parameters: []
+                              type: 1
+                            - desc: ""
+                              enum_list: []
+                              enum_var_names: []
+                              global_disable: false
+                              id: ""
+                              is_required: false
+                              local_disable: true
+                              location: 3
+                              name: code
+                              sub_parameters: []
+                              type: 2
+                        response_style:
+                            mode: 0
+                      is_draft: false
+                      plugin_id: "7362852017859018779"
+                      plugin_version: ""
+                    - api_id: "7362080779243110454"
+                      api_name: getToutiaoNews
+                      fc_setting:
+                        api_id: "7362080779243110454"
+                        api_name: getToutiaoNews
+                        is_draft: false
+                        plugin_id: "7362080779243094070"
+                        plugin_version: ""
+                        request_params:
+                            - desc: 搜索新闻的关键词，必须用中文
+                              enum_list: []
+                              enum_var_names: []
+                              global_disable: false
+                              id: ""
+                              is_required: true
+                              local_disable: false
+                              location: 2
+                              name: q
+                              sub_parameters: []
+                              sub_type: 0
+                              type: 1
+                        response_params:
+                            - desc: ""
+                              enum_list: []
+                              enum_var_names: []
+                              global_disable: false
+                              id: ""
+                              is_required: false
+                              local_disable: false
+                              location: 3
+                              name: news
+                              sub_parameters:
+                                - desc: ""
+                                  enum_list: []
+                                  enum_var_names: []
+                                  global_disable: false
+                                  id: ""
+                                  is_required: false
+                                  local_disable: false
+                                  location: 3
+                                  name: '[Array Item]'
+                                  sub_parameters:
+                                    - desc: ""
+                                      enum_list: []
+                                      enum_var_names: []
+                                      global_disable: false
+                                      id: ""
+                                      is_required: false
+                                      local_disable: false
+                                      location: 3
+                                      name: title
+                                      sub_parameters: []
+                                      type: 1
+                                    - desc: ""
+                                      enum_list: []
+                                      enum_var_names: []
+                                      global_disable: false
+                                      id: ""
+                                      is_required: false
+                                      local_disable: false
+                                      location: 3
+                                      name: cover
+                                      sub_parameters: []
+                                      type: 1
+                                    - desc: ""
+                                      enum_list: []
+                                      enum_var_names: []
+                                      global_disable: false
+                                      id: ""
+                                      is_required: false
+                                      local_disable: false
+                                      location: 3
+                                      name: time
+                                      sub_parameters: []
+                                      type: 1
+                                    - desc: ""
+                                      enum_list: []
+                                      enum_var_names: []
+                                      global_disable: false
+                                      id: ""
+                                      is_required: false
+                                      local_disable: false
+                                      location: 3
+                                      name: url
+                                      sub_parameters: []
+                                      type: 1
+                                    - desc: ""
+                                      enum_list: []
+                                      enum_var_names: []
+                                      global_disable: false
+                                      id: ""
+                                      is_required: false
+                                      local_disable: false
+                                      location: 3
+                                      name: summary
+                                      sub_parameters: []
+                                      type: 1
+                                    - desc: ""
+                                      enum_list: []
+                                      enum_var_names: []
+                                      global_disable: false
+                                      id: ""
+                                      is_required: false
+                                      local_disable: false
+                                      location: 3
+                                      name: media_name
+                                      sub_parameters: []
+                                      type: 1
+                                    - desc: ""
+                                      enum_list: []
+                                      enum_var_names: []
+                                      global_disable: false
+                                      id: ""
+                                      is_required: false
+                                      local_disable: true
+                                      location: 3
+                                      name: categories
+                                      sub_parameters:
+                                        - desc: ""
+                                          enum_list: []
+                                          enum_var_names: []
+                                          global_disable: false
+                                          id: ""
+                                          is_required: false
+                                          local_disable: true
+                                          location: 3
+                                          name: '[Array Item]'
+                                          sub_parameters: []
+                                          type: 1
+                                      type: 5
+                                  type: 4
+                              type: 5
+                        response_style:
+                            mode: 0
+                      is_draft: false
+                      plugin_id: "7362080779243094070"
+                      plugin_version: ""
+        fcParamVar:
+            knowledgeFCParam: {}
+        llmParam:
+            - name: apiMode
+              input:
+                type: integer
+                value: "0"
+            - name: temperature
+              input:
+                type: float
+                value: "0.5"
+            - name: topP
+              input:
+                type: float
+                value: "1"
+            - name: frequencyPenalty
+              input:
+                type: float
+                value: "0"
+            - name: maxTokens
+              input:
+                type: integer
+                value: "4096"
+            - name: spCurrentTime
+              input:
+                type: boolean
+                value: false
+            - name: spAntiLeak
+              input:
+                type: boolean
+                value: false
+            - name: thinkingType
+              input:
+                type: string
+                value: enabled
+            - name: responseFormat
+              input:
+                type: integer
+                value: "2"
+            - name: modelName
+              input:
+                type: string
+                value: 豆包·2.0·mini
+            - name: modelType
+              input:
+                type: integer
+                value: "1772003209"
+            - name: generationDiversity
+              input:
+                type: string
+                value: balance
+            - name: parameters
+              input:
+                type: object
+                properties:
+                    max_completion_tokens:
+                        type: integer
+                        value: "0"
+                    reasoning_effort:
+                        type: string
+                        value: medium
+                value: null
+            - name: prompt
+              input:
+                type: string
+                value: ""
+            - name: enableChatHistory
+              input:
+                type: boolean
+                value: false
+            - name: chatHistoryRound
+              input:
+                type: integer
+                value: "3"
+            - name: systemPrompt
+              input:
+                type: string
+                value: 你是一个城市信息获取助手，你要基于获取的时间信息{{year}}、{{month}}、{{day}}输出对应日期的{{city}}的今天明天和后天三天天气和对应日期的相关正能量的贴近生活的新闻（把{{city}}、{{year}}、{{month}}、{{day}}作为关键词检索新闻）
+            - name: stableSystemPrompt
+              input:
+                type: string
+                value: ""
+            - name: canContinue
+              input:
+                type: boolean
+                value: false
+            - name: loopPromptVersion
+              input:
+                type: string
+                value: ""
+            - name: loopPromptName
+              input:
+                type: string
+                value: ""
+            - name: loopPromptId
+              input:
+                type: string
+                value: ""
+        node_inputs:
+            - name: city
+              input:
+                value:
+                    path: city
+                    ref_node: "100001"
+            - name: year
+              input:
+                type: string
+                value:
+                    path: year
+                    ref_node: "180397"
+            - name: month
+              input:
+                type: string
+                value:
+                    path: month
+                    ref_node: "180397"
+            - name: day
+              input:
+                type: string
+                value:
+                    path: day
+                    ref_node: "180397"
+        node_outputs:
+            data:
+                type: list
+                items:
+                    type: string
+                    value: null
+                value: null
+            news:
+                type: list
+                items:
+                    type: string
+                    value: null
+                value: null
+            reasoning_content:
+                type: string
+                value: null
+        settingOnError:
+            processType: 1
+            retryTimes: 0
+            timeoutMs: 180000
+    - id: "168123"
+      type: llm
+      title: 作家
+      icon: https://lf3-static.bytednsdoc.com/obj/eden-cn/dvsmryvd_avi_dvsm/ljhwZthlaukjlkulzlp/icon/icon-LLM-v2.jpg
+      description: "调用大语言模型,使用变量和提示词生成回复"
+      version: "3"
+      position:
+        x: 718.0673393167617
+        y: 197.69228472073667
+      parameters:
+        fcParam:
+            pluginFCParam:
+                pluginList: []
+        fcParamVar:
+            knowledgeFCParam: {}
+        llmParam:
+            - name: apiMode
+              input:
+                type: integer
+                value: "0"
+            - name: maxTokens
+              input:
+                type: integer
+                value: "2200"
+            - name: spCurrentTime
+              input:
+                type: boolean
+                value: false
+            - name: spAntiLeak
+              input:
+                type: boolean
+                value: false
+            - name: thinkingType
+              input:
+                type: string
+                value: disabled
+            - name: responseFormat
+              input:
+                type: integer
+                value: "2"
+            - name: modelName
+              input:
+                type: string
+                value: DeepSeek-V3.2
+            - name: modelType
+              input:
+                type: integer
+                value: "1764929611"
+            - name: generationDiversity
+              input:
+                type: string
+                value: balance
+            - name: parameters
+              input:
+                type: object
+                value: null
+            - name: prompt
+              input:
+                type: string
+                value: ""
+            - name: enableChatHistory
+              input:
+                type: boolean
+                value: false
+            - name: chatHistoryRound
+              input:
+                type: integer
+                value: "3"
+            - name: systemPrompt
+              input:
+                type: string
+                value: 你是一个旅行家擅长写不同文风的游记，根据用户的城市{{city}}、天气数据{{data}}、新闻事件{{news}}写一篇{{writing_style}}风格的游记。
+            - name: stableSystemPrompt
+              input:
+                type: string
+                value: ""
+            - name: canContinue
+              input:
+                type: boolean
+                value: false
+            - name: loopPromptVersion
+              input:
+                type: string
+                value: ""
+            - name: loopPromptName
+              input:
+                type: string
+                value: ""
+            - name: loopPromptId
+              input:
+                type: string
+                value: ""
+        node_inputs:
+            - name: data
+              input:
+                value:
+                    path: data
+                    ref_node: "147393"
+            - name: writing_style
+              input:
+                value:
+                    path: writing_style
+                    ref_node: "100001"
+            - name: news
+              input:
+                value:
+                    path: news
+                    ref_node: "147393"
+            - name: city
+              input:
+                value:
+                    path: city
+                    ref_node: "100001"
+        node_outputs:
+            travel_note:
+                type: string
+                value: null
+        settingOnError:
+            processType: 1
+            retryTimes: 0
+            timeoutMs: 180000
+    - id: "150935"
+      type: llm
+      title: 画家的助手
+      icon: https://lf3-static.bytednsdoc.com/obj/eden-cn/dvsmryvd_avi_dvsm/ljhwZthlaukjlkulzlp/icon/icon-LLM-v2.jpg
+      description: "调用大语言模型,使用变量和提示词生成回复"
+      version: "3"
+      position:
+        x: 1143.3839487870634
+        y: -16.896226262863635
+      parameters:
+        fcParamVar:
+            knowledgeFCParam: {}
+        llmParam:
+            - name: apiMode
+              input:
+                type: integer
+                value: "0"
+            - name: maxTokens
+              input:
+                type: integer
+                value: "2200"
+            - name: spCurrentTime
+              input:
+                type: boolean
+                value: false
+            - name: spAntiLeak
+              input:
+                type: boolean
+                value: false
+            - name: thinkingType
+              input:
+                type: string
+                value: disabled
+            - name: responseFormat
+              input:
+                type: integer
+                value: "2"
+            - name: modelName
+              input:
+                type: string
+                value: DeepSeek-V3.2
+            - name: modelType
+              input:
+                type: integer
+                value: "1764929611"
+            - name: generationDiversity
+              input:
+                type: string
+                value: balance
+            - name: parameters
+              input:
+                type: object
+                value: null
+            - name: prompt
+              input:
+                type: string
+                value: ""
+            - name: enableChatHistory
+              input:
+                type: boolean
+                value: false
+            - name: chatHistoryRound
+              input:
+                type: integer
+                value: "3"
+            - name: systemPrompt
+              input:
+                type: string
+                value: 你是画家的助手，从你{{travel_note}}中摘选最具画面感的一个场景翻译为英文再提取关键词作为文生图提示词输出，用于下一个画家ai生成图片。注意，英文 prompt 缩短到 2～3 句话，只保留核心画面,只保留最直接的描述，不要过于复杂且你只许生成英语提示词，其他内容不许生成
+            - name: stableSystemPrompt
+              input:
+                type: string
+                value: ""
+            - name: canContinue
+              input:
+                type: boolean
+                value: false
+            - name: loopPromptVersion
+              input:
+                type: string
+                value: ""
+            - name: loopPromptName
+              input:
+                type: string
+                value: ""
+            - name: loopPromptId
+              input:
+                type: string
+                value: ""
+        node_inputs:
+            - name: travel_note
+              input:
+                value:
+                    path: travel_note
+                    ref_node: "168123"
+        node_outputs:
+            prompt:
+                type: string
+                value: null
+        settingOnError:
+            processType: 1
+            retryTimes: 0
+            timeoutMs: 180000
+    - id: "198293"
+      type: code
+      title: markdown形式输出
+      icon: https://lf3-static.bytednsdoc.com/obj/eden-cn/dvsmryvd_avi_dvsm/ljhwZthlaukjlkulzlp/icon/icon-Code-v2.jpg
+      description: "编写代码，处理输入变量来生成返回值"
+      version: v2
+      position:
+        x: 1966.763180392373
+        y: 214.7242964521463
+      parameters:
+        code: "# 在这里，您可以通过 'args'  获取节点中的输入变量，并通过 'ret' 输出结果\n# 'args' 已经被正确地注入到环境中\n# 下面是一个示例，首先获取节点的全部输入参数params，其次获取其中参数名为'input'的值：\n# params = args.params; \n# input = params['input'];\n# 下面是一个示例，输出一个包含多种数据类型的 'ret' 对象：\n# ret: Output =  { \"name\": '小明', \"hobbies\": [\"看书\", \"旅游\"] };\n\nasync def main(args: Args) -> Output:\n    params = args.params\n    # 获取上游传入的图片链接和笔记\n    image_url = params['image_urls']\n    note = params['travel_note']\n    \n    # 拼接 Markdown：笔记内容 + 空行 + 图片\n    markdown_output = f\"{note}\\n\\n![image]({image_url})\"\n    \n    # 构建返回对象\n    ret: Output = {\n        \"markdown_output\": markdown_output\n    }\n    return ret"
+        language: 3
+        node_inputs:
+            - name: image_urls
+              input:
+                type: string
+                value:
+                    path: image_urls
+                    ref_node: "118264"
+            - name: travel_note
+              input:
+                value:
+                    path: travel_note
+                    ref_node: "168123"
+        node_outputs:
+            markdown_output:
+                type: string
+                value: null
+        settingOnError:
+            processType: 1
+            retryTimes: 0
+            timeoutMs: 60000
+    - id: "118264"
+      type: llm
+      title: 画家
+      icon: https://lf3-static.bytednsdoc.com/obj/eden-cn/dvsmryvd_avi_dvsm/ljhwZthlaukjlkulzlp/icon/icon-LLM-v2.jpg
+      description: "调用大语言模型,使用变量和提示词生成回复"
+      version: "3"
+      position:
+        x: 1553.2941950317572
+        y: -16.896226262863635
+      parameters:
+        fcParam:
+            pluginFCParam:
+                pluginList:
+                    - api_id: "7449357316585013267"
+                      api_name: gen_image
+                      is_draft: false
+                      plugin_id: "7449357316584996883"
+                      plugin_version: ""
+        fcParamVar:
+            knowledgeFCParam: {}
+        llmParam:
+            - name: apiMode
+              input:
+                type: integer
+                value: "0"
+            - name: frequencyPenalty
+              input:
+                type: float
+                value: "0"
+            - name: maxTokens
+              input:
+                type: integer
+                value: "4096"
+            - name: spCurrentTime
+              input:
+                type: boolean
+                value: false
+            - name: spAntiLeak
+              input:
+                type: boolean
+                value: false
+            - name: thinkingType
+              input:
+                type: string
+                value: enabled
+            - name: responseFormat
+              input:
+                type: integer
+                value: "2"
+            - name: modelName
+              input:
+                type: string
+                value: 豆包·2.0·pro
+            - name: modelType
+              input:
+                type: integer
+                value: "1772700462"
+            - name: generationDiversity
+              input:
+                type: string
+                value: balance
+            - name: parameters
+              input:
+                type: object
+                properties:
+                    max_completion_tokens:
+                        type: integer
+                        value: "0"
+                    reasoning_effort:
+                        type: string
+                        value: medium
+                value: null
+            - name: prompt
+              input:
+                type: string
+                value: ""
+            - name: enableChatHistory
+              input:
+                type: boolean
+                value: false
+            - name: chatHistoryRound
+              input:
+                type: integer
+                value: "3"
+            - name: systemPrompt
+              input:
+                type: string
+                value: generate  a  picture with the {{prompt}}.you should fill    the missing parameters  by yourself.you can only             output url links without double quotation mark,other    text cannot be output.
+            - name: stableSystemPrompt
+              input:
+                type: string
+                value: ""
+            - name: canContinue
+              input:
+                type: boolean
+                value: false
+            - name: loopPromptVersion
+              input:
+                type: string
+                value: ""
+            - name: loopPromptName
+              input:
+                type: string
+                value: ""
+            - name: loopPromptId
+              input:
+                type: string
+                value: ""
+        node_inputs:
+            - name: prompt
+              input:
+                value:
+                    path: prompt
+                    ref_node: "150935"
+        node_outputs:
+            image_urls:
+                type: string
+                value: null
+            reasoning_content:
+                type: string
+                value: null
+        settingOnError:
+            processType: 1
+            retryTimes: 0
+            timeoutMs: 180000
+    - id: "134501"
+      type: plugin
+      title: get_current_datetime
+      icon: https://lf3-static.bytednsdoc.com/obj/eden-cn/dvsmryvd_avi_dvsm/ljhwZthlaukjlkulzlp/icon/icon-Plugin-v2.jpg
+      description: "获取当前的日期和时间，并以格式化的字符串形式返回。\n    该函数获取本地的日期和时间，并将其以'YYYY-MM-DD HH:MM:SS'格式的字符串返回，\n    其中分别代表年、月、日、小时、分钟和秒。\n    返回:\n        str: 表示当前日期和时间的格式化字符串。"
+      position:
+        x: -543.4911072337512
+        y: -112.29492120423106
+      parameters:
+        apiParam:
+            - name: apiID
+              input:
+                type: string
+                value: "7384737081651724300"
+            - name: apiName
+              input:
+                type: string
+                value: "get_current_datetime"
+            - name: pluginID
+              input:
+                type: string
+                value: "7384737081651707916"
+            - name: pluginName
+              input:
+                type: string
+                value: "现在时间"
+            - name: pluginVersion
+              input:
+                type: string
+                value: ""
+            - name: tips
+              input:
+                type: string
+                value: ""
+            - name: outDocLink
+              input:
+                type: string
+                value: ""
+        node_outputs:
+            message:
+                type: string
+                value: null
+        settingOnError:
+            processType: 1
+            retryTimes: 0
+            timeoutMs: 180000
+    - id: "180397"
+      type: code
+      title: 代码
+      icon: https://lf3-static.bytednsdoc.com/obj/eden-cn/dvsmryvd_avi_dvsm/ljhwZthlaukjlkulzlp/icon/icon-Code-v2.jpg
+      description: "编写代码，处理输入变量来生成返回值"
+      version: v2
+      position:
+        x: -131.5376236862268
+        y: -112.29492120423106
+      parameters:
+        code: "# 在这里，您可以通过 'args'  获取节点中的输入变量，并通过 'ret' 输出结果\n# 'args' 已经被正确地注入到环境中\n# 下面是一个示例，首先获取节点的全部输入参数params，其次获取其中参数名为'input'的值：\n# params = args.params; \n# input = params['input'];\n# 下面是一个示例，输出一个包含多种数据类型的 'ret' 对象：\n# ret: Output =  { \"name\": '小明', \"hobbies\": [\"看书\", \"旅游\"] };\nfrom datetime import datetime\n\nasync def main(args):\n    params = args.params\n    time_str = params['message']\n\n    dt = datetime.strptime(time_str, \"%Y-%m-%d %H:%M:%S\")\n    year = dt.strftime(\"%Y\")\n    month = dt.strftime(\"%m\")\n    day = dt.strftime(\"%d\")\n\n    ret = {\n        \"year\": year,\n        \"month\": month,\n        \"day\": day\n    }\n    return ret"
+        language: 3
+        node_inputs:
+            - name: message
+              input:
+                value:
+                    path: message
+                    ref_node: "134501"
+        node_outputs:
+            day:
+                type: string
+                value: null
+            month:
+                type: string
+                value: null
+            year:
+                type: string
+                value: null
+        settingOnError:
+            processType: 1
+            retryTimes: 0
+            timeoutMs: 60000
+edges:
+    - source_node: "100001"
+      target_node: "147393"
+    - source_node: "100001"
+      target_node: "168123"
+    - source_node: "100001"
+      target_node: "134501"
+    - source_node: "198293"
+      target_node: "900001"
+    - source_node: "180397"
+      target_node: "147393"
+    - source_node: "147393"
+      target_node: "168123"
+    - source_node: "168123"
+      target_node: "150935"
+    - source_node: "168123"
+      target_node: "198293"
+    - source_node: "150935"
+      target_node: "118264"
+    - source_node: "118264"
+      target_node: "198293"
+    - source_node: "134501"
+      target_node: "180397"
